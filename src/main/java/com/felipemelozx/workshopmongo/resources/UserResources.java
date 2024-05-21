@@ -4,11 +4,11 @@ import com.felipemelozx.workshopmongo.DTO.UserDTO;
 import com.felipemelozx.workshopmongo.domain.User;
 import com.felipemelozx.workshopmongo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -29,5 +29,11 @@ public class UserResources {
     public void create(@RequestBody User user){
         User user1 = new User(user.getName(), user.getEmail());
         service.createUser(user);
+    }
+
+    @GetMapping(value="/{id}")
+    public ResponseEntity<UserDTO> findByid(@PathVariable String id){
+        UserDTO userDto = service.findById(id);
+        return ResponseEntity.ok().body(userDto);
     }
 }
