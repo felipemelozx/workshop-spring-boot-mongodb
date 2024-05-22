@@ -5,7 +5,6 @@ import com.felipemelozx.workshopmongo.domain.User;
 import com.felipemelozx.workshopmongo.repository.UserRepository;
 import com.felipemelozx.workshopmongo.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +29,11 @@ public class UserService {
         }
     }
 
-    public void createUser(User user){
-        userRepository.save(user);
+    public User fromDTO(UserDTO objDTO){
+        return new User(objDTO.getId(),objDTO.getName(), objDTO.getEmail());
+    }
+
+    public User createUser(User user){
+        return userRepository.insert(user);
     }
 }

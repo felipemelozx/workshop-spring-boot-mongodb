@@ -4,10 +4,11 @@ import com.felipemelozx.workshopmongo.DTO.UserDTO;
 import com.felipemelozx.workshopmongo.domain.User;
 import com.felipemelozx.workshopmongo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,9 +27,11 @@ public class UserResources {
     }
 
     @PostMapping
-    public void create(@RequestBody User user){
-        User user1 = new User(user.getName(), user.getEmail());
+    public ResponseEntity<Void> create(@RequestBody UserDTO userDTO){
+        User user = service.fromDTO(userDTO);
         service.createUser(user);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
+        return  ResponseEntity.created(uri).build();
     }
 
     @GetMapping(value="/{id}")
