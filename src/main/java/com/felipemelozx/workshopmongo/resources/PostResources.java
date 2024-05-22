@@ -1,11 +1,13 @@
 package com.felipemelozx.workshopmongo.resources;
 
 import com.felipemelozx.workshopmongo.domain.Post;
+import com.felipemelozx.workshopmongo.resources.Util.URL;
 import com.felipemelozx.workshopmongo.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -26,6 +28,12 @@ public class PostResources {
     public ResponseEntity<Post> findById(@PathVariable String id){
         Post post = service.findById(id);
         return ResponseEntity.ok().body(post);
+    }
+    @GetMapping(value="/titlesearch")
+    public ResponseEntity<List<Post>> findByTitle(@RequestParam(value = "text", defaultValue = "") String text){
+        text = URL.decodePAram(text);
+        List<Post> postList = service.findByTitle(text);
+        return ResponseEntity.ok().body(postList);
     }
 
     @DeleteMapping(value="/{id}")
