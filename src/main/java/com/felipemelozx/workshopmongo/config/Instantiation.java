@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.TimeZone;
 
 @Configuration
@@ -30,7 +29,7 @@ public class Instantiation implements CommandLineRunner {
 
         userRepository.deleteAll();
         postRepository.deleteAll();
-        
+
         User maria = new User(null, "Maria souza", "mariasouza@gmail.com");
         User felipe = new User(null, "felipe souza", "felipesouza@gmail.com");
         User joao = new User(null, "Joao souza", "joaosouza@gmail.com");

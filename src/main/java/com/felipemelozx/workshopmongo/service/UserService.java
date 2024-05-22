@@ -17,42 +17,39 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> findAll() {
+    public List<User> findAll(){
         return userRepository.findAll();
     }
-
-    public UserDTO findById(String id) {
+    public User findById(String id) {
         try {
             Optional<User> user = userRepository.findById(id);
-            return new UserDTO(user.orElseThrow());
+            return user.orElseThrow();
         } catch (NoSuchElementException e) {
             throw new ObjectNotFoundException(e.getMessage());
         }
     }
 
-    public User fromDTO(UserDTO objDTO) {
-        return new User(objDTO.getId(), objDTO.getName(), objDTO.getEmail());
+    public User fromDTO(UserDTO objDTO){
+        return new User(objDTO.getId(),objDTO.getName(), objDTO.getEmail());
     }
 
-    public User createUser(User user) {
+    public User createUser(User user){
         return userRepository.insert(user);
     }
 
-    public void delete(String id) {
+    public void delete(String id){
         findById(id);
         userRepository.deleteById(id);
     }
 
-    public User update(User obj) {
-        UserDTO user = findById(obj.getId());
-        updateData(user, obj);
-        User u = fromDTO(user);
-        return userRepository.save(u);
-
+    public User update(User obj){
+        Optional<User> newObj = userRepository.findById(obj.getId());
+        updateData(newObj, obj );
+        return userRepository.save(newObj.orElseThrow());
     }
 
-    private void updateData(UserDTO newObj, User obj) {
-        newObj.setName(obj.getName());
-        newObj.setEmail(obj.getEmail());
+    private void updateData(Optional<User> newObj, User obj) {
+        newObj.orElseThrow().setName(obj.getName());
+        newObj.orElseThrow().setName(obj.getName());
     }
 }

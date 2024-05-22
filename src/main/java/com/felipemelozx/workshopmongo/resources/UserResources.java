@@ -1,6 +1,7 @@
 package com.felipemelozx.workshopmongo.resources;
 
 import com.felipemelozx.workshopmongo.DTO.UserDTO;
+import com.felipemelozx.workshopmongo.domain.Post;
 import com.felipemelozx.workshopmongo.domain.User;
 import com.felipemelozx.workshopmongo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,14 @@ public class UserResources {
     }
 
     @GetMapping(value="/{id}")
-    public ResponseEntity<UserDTO> findByid(@PathVariable String id){
-        UserDTO userDto = service.findById(id);
-        return ResponseEntity.ok().body(userDto);
+    public ResponseEntity<User> findById(@PathVariable String id){
+        User user = service.findById(id);
+        return ResponseEntity.ok().body(user);
+    }
+    @GetMapping(value="/{id}/post")
+    public ResponseEntity<List<Post>> findPost(@PathVariable String id){
+        User obj = service.findById(id);
+        return ResponseEntity.ok().body(obj.getPostList());
     }
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody UserDTO userDTO){
