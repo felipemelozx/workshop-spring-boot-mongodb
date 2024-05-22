@@ -1,10 +1,13 @@
 package com.felipemelozx.workshopmongo.domain;
 
 import com.felipemelozx.workshopmongo.DTO.AuthorDTO;
+import com.felipemelozx.workshopmongo.DTO.CommentDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 import java.util.Objects;
 
@@ -18,6 +21,9 @@ public class Post implements Serializable {
     private String body;
     private AuthorDTO author;
 
+    private final List<CommentDTO> comments = new ArrayList<>();
+
+
     public Post(String id, Date date, String title, String body, AuthorDTO author) {
         this.id = id;
         this.date = date;
@@ -27,6 +33,10 @@ public class Post implements Serializable {
     }
 
     public Post() {
+    }
+
+    public List<CommentDTO> getComments() {
+        return comments;
     }
 
     public AuthorDTO getAuthor() {
