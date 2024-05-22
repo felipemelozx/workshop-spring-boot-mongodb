@@ -26,6 +26,11 @@ public class UserResources {
         return ResponseEntity.ok().body(listDto);
     }
 
+    @GetMapping(value="/{id}")
+    public ResponseEntity<UserDTO> findByid(@PathVariable String id){
+        UserDTO userDto = service.findById(id);
+        return ResponseEntity.ok().body(userDto);
+    }
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody UserDTO userDTO){
         User user = service.fromDTO(userDTO);
@@ -33,16 +38,16 @@ public class UserResources {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
         return  ResponseEntity.created(uri).build();
     }
-
-    @GetMapping(value="/{id}")
-    public ResponseEntity<UserDTO> findByid(@PathVariable String id){
-        UserDTO userDto = service.findById(id);
-        return ResponseEntity.ok().body(userDto);
+    @PutMapping(value="/{id}")
+    public ResponseEntity<User> update(@RequestBody UserDTO userDTO, @PathVariable String id){
+        User user = service.fromDTO(userDTO);
+        user.setId(id);
+        service.update(user);
+        return  ResponseEntity.noContent().build();
     }
-
     @DeleteMapping(value="/{id}")
     public ResponseEntity<Void> delteByid(@PathVariable String id){
-       service.delete(id);
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
